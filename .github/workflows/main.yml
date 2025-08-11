@@ -25,8 +25,7 @@ jobs:
         run: |
           mkdir -p models
           # Replace with your real Google Drive file IDs
-          gdown --id 1AAAAA_MODEL_TYPE_FILE_ID -O model_type_ft.zip
-          gdown --id 1BBBBB_MODEL_EXPL_FILE_ID -O model_explanation_ft.zip
+          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/
           unzip model_type_ft.zip -d models/
           unzip model_explanation_ft.zip -d models/
 
