@@ -1,0 +1,52 @@
+name: Run Feedback Pipeline
+
+on:
+  schedule:
+    # Use 'cron' syntax. '0 2 * * *' means at 02:00 UTC every day.
+    # 9 AM WIB (UTC+7) is 2 AM UTC.
+    - cron: '0 0 * * *'
+  workflow_dispatch: # Run manually from GitHub Actions tab
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.10"
+
+      - name: Install dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pandas torch transformers tqdm python-dotenv pyodps gdown
+          
+      - name: Download model_type_ft folder
+        run: |
+          mkdir -p models
+          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/model_type_ft
+      
+      - name: Download model_explanation_ft folder
+        run: |
+          mkdir -p models
+          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/model_explanation_ft
+
+      - name: Set environment variables
+        env:
+          ODPS_ACCESS_ID: ${{ secrets.ODPS_ACCESS_ID }}
+          ODPS_SECRET_ACCESS_KEY: ${{ secrets.ODPS_SECRET_ACCESS_KEY }}
+          ODPS_PROJECT: ${{ secrets.ODPS_PROJECT }}
+          ODPS_ENDPOINT: ${{ secrets.ODPS_ENDPOINT }}
+        run: echo "Environment variables set from GitHub Secrets"
+
+      - name: Run pipeline
+        env:
+          ODPS_ACCESS_ID: ${{ secrets.ODPS_ACCESS_ID }}
+          ODPS_SECRET_ACCESS_KEY: ${{ secrets.ODPS_SECRET_ACCESS_KEY }}
+          ODPS_PROJECT: ${{ secrets.ODPS_PROJECT }}
+          ODPS_ENDPOINT: ${{ secrets.ODPS_ENDPOINT }}
+        run: python table_model_table.py
