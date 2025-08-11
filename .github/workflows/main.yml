@@ -20,14 +20,16 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install pandas torch transformers tqdm python-dotenv pyodps gdown
-
-      - name: Download models from Google Drive
+          
+      - name: Download model_type_ft folder
         run: |
           mkdir -p models
-          # Replace with your real Google Drive file IDs
-          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/
-          unzip model_type_ft.zip -d models/
-          unzip model_explanation_ft.zip -d models/
+          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/model_type_ft
+      
+      - name: Download model_explanation_ft folder
+        run: |
+          mkdir -p models
+          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/model_explanation_ft
 
       - name: Set environment variables
         env:
