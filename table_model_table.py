@@ -75,9 +75,9 @@ MODEL_PATHS = {
 MAPPING_PATHS = {
     "type": os.path.join(MODEL_PATHS["type"], 'config.json'),
     "explanation": os.path.join(MODEL_PATHS["explanation"], 'config.json'),
-    "explanation_to_work_order": "C:\\Users\\ITN\\Documents\\GitHub\\CS-ML-Mapper\\explanation_to_work_order.json",
-    "work_order_to_category": "C:\\Users\\ITN\\Documents\\GitHub\\CS-ML-Mapper\\work_order_to_category.json",
-    "work_order_to_work_priority": "C:\\Users\\ITN\\Documents\\GitHub\\CS-ML-Mapper\\work_order_to_work_priority.json",
+    "explanation_to_work_order": ".\\explanation_to_work_order.json",
+    "work_order_to_category": ".\\work_order_to_category.json",
+    "work_order_to_work_priority": ".\\work_order_to_work_priority.json",
 }
 
 # ================================
