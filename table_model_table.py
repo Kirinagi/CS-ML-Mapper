@@ -80,18 +80,41 @@ DESCRIPTION_COLUMN = "description"
 #     "work_order_to_work_priority": ".\\work_order_to_work_priority.json",
 # }
 
-MODEL_PATHS = {
-    "type": "./models/model_type_ft",
-    "explanation": "./models/model_explanation_ft"
-}
+# Fix 1: If your models are actually in models(1)/models/
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Try both possible structures
+if os.path.exists(os.path.join(BASE_DIR, "models(1)", "models")):
+    # Google Drive created models(1) folder
+    MODEL_PATHS = {
+        "type": os.path.join(BASE_DIR, "models(1)", "models", "model_type_ft"),
+        "explanation": os.path.join(BASE_DIR, "models(1)", "models", "model_explanation_ft")
+    }
+    print("Using models(1)/models/ structure")
+elif os.path.exists(os.path.join(BASE_DIR, "models")):
+    # Standard models folder
+    MODEL_PATHS = {
+        "type": os.path.join(BASE_DIR, "models", "model_type_ft"),
+        "explanation": os.path.join(BASE_DIR, "models", "model_explanation_ft")
+    }
+    print("Using models/ structure")
+else:
+    raise FileNotFoundError("Cannot find models directory")
 
 MAPPING_PATHS = {
     "type": os.path.join(MODEL_PATHS["type"], 'config.json'),
     "explanation": os.path.join(MODEL_PATHS["explanation"], 'config.json'),
-    "explanation_to_work_order": "./explanation_to_work_order.json",
-    "work_order_to_category": "./work_order_to_category.json",
-    "work_order_to_work_priority": "./work_order_to_work_priority.json",
+    "explanation_to_work_order": os.path.join(BASE_DIR, "explanation_to_work_order.json"),
+    "work_order_to_category": os.path.join(BASE_DIR, "work_order_to_category.json"),
+    "work_order_to_work_priority": os.path.join(BASE_DIR, "work_order_to_work_priority.json"),
 }
+
+# Verify all paths exist
+for key, path in MAPPING_PATHS.items():
+    if not os.path.exists(path):
+        print(f"WARNING: {key} not found at {path}")
+    else:
+        print(f"✓ {key} found at {path}")
 
 # ================================
 # MAXCOMPUTE/ODPS FUNCTIONS
