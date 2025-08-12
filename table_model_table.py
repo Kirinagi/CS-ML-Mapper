@@ -65,9 +65,22 @@ OUTPUT_PARTITION_TEMPLATE = "pt='{date}'"
 DESCRIPTION_COLUMN = "description"
 
 # --- Model & Mapping Paths ---
+# MODEL_PATHS = {
+#     # "type": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_type_ft",
+#     # "explanation": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_explanation_ft"
+#     "type": "./models/model_type_ft",
+#     "explanation": "./models/model_explanation_ft"
+# }
+
+# MAPPING_PATHS = {
+#     "type": os.path.join(MODEL_PATHS["type"], 'config.json'),
+#     "explanation": os.path.join(MODEL_PATHS["explanation"], 'config.json'),
+#     "explanation_to_work_order": ".\\explanation_to_work_order.json",
+#     "work_order_to_category": ".\\work_order_to_category.json",
+#     "work_order_to_work_priority": ".\\work_order_to_work_priority.json",
+# }
+
 MODEL_PATHS = {
-    # "type": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_type_ft",
-    # "explanation": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_explanation_ft"
     "type": "./models/model_type_ft",
     "explanation": "./models/model_explanation_ft"
 }
@@ -75,9 +88,9 @@ MODEL_PATHS = {
 MAPPING_PATHS = {
     "type": os.path.join(MODEL_PATHS["type"], 'config.json'),
     "explanation": os.path.join(MODEL_PATHS["explanation"], 'config.json'),
-    "explanation_to_work_order": ".\\explanation_to_work_order.json",
-    "work_order_to_category": ".\\work_order_to_category.json",
-    "work_order_to_work_priority": ".\\work_order_to_work_priority.json",
+    "explanation_to_work_order": "./explanation_to_work_order.json",
+    "work_order_to_category": "./work_order_to_category.json",
+    "work_order_to_work_priority": "./work_order_to_work_priority.json",
 }
 
 # ================================
