@@ -25,15 +25,25 @@ jobs:
           pip install --upgrade pip
           pip install pandas torch transformers tqdm python-dotenv pyodps gdown
           
-      - name: Download model_type_ft folder
+      - name: Download and extract model_type_ft
         run: |
-          mkdir -p models
-          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/model_type_ft
+          mkdir -p models/model_type_ft
+          gdown "https://drive.google.com/uc?id=1zJmKeLTq68sZfJTVOmxG-xWxupn_q6WF" -O model_type_ft.zip
+          unzip model_type_ft.zip -d models/model_type_ft
+          rm model_type_ft.zip
       
-      - name: Download model_explanation_ft folder
+      - name: Download and extract model_explanation_ft
         run: |
-          mkdir -p models
-          gdown --folder --id 1jm3UzgFvyKzOhWZ-FKnY3AQe2ca0C_Oz -O models/model_explanation_ft
+          mkdir -p models/model_explanation_ft
+          gdown "https://drive.google.com/uc?id=1zJmKeLTq68sZfJTVOmxG-xWxupn_q6WF" -O model_explanation_ft.zip
+          unzip model_explanation_ft.zip -d models/model_explanation_ft
+          rm model_explanation_ft.zip
+
+      - name: Download mapping file
+        run: |
+          gdown "https://drive.google.com/uc?id=1lgwMmuv450NZg9jlBhHVeecP10gfOqHt" -O explanation_to_work_order.json
+          gdown "https://drive.google.com/uc?id=1zLe8ZO1qMvf4dXSxHNdnx6mwaOaByxmi" -O work_order_to_category.json
+          gdown "https://drive.google.com/uc?id=1MfZsuTmbjEct0AyZO0Na6Ew8JG1ChKT2" -O work_order_to_work_priority.json
 
       - name: Set environment variables
         env:
