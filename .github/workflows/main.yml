@@ -26,14 +26,18 @@ jobs:
       # === Download & Extract Models + Mapping Files ===
       - name: Download and extract all models and mappings
         run: |
-          gdown "https://drive.google.com/uc?id=1RXUZAaTN1RcyuMlFA9R-SN7AcCzLttDm" -O model.zip
+          gdown "https://drive.google.com/uc?id=FILE_ID_FOR_MODEL_ZIP" -O model.zip
           unzip -o model.zip -d tmp_models
+          # Find the folder that contains 'model_explanation_ft' and 'model_type_ft'
+          MODELS_DIR=$(find tmp_models -type d -name "models" | head -n 1)
           # Move model folders
           mkdir -p models
-          mv tmp_models/models/* models/
-          # Move mapping JSONs
-          mv tmp_models/*.json ./
+          mv "$MODELS_DIR"/* models/
+          # Move mapping JSONs (search one level up from models folder)
+          MAPPINGS_DIR=$(dirname "$MODELS_DIR")
+          mv "$MAPPINGS_DIR"/*.json ./
           rm -rf tmp_models model.zip
+
 
       # === Set Environment Variables ===
       - name: Set environment variables
