@@ -26,7 +26,7 @@ jobs:
       # === Download & Extract Models + Mapping Files ===
       - name: Download and extract all models and mappings
         run: |
-          gdown "https://drive.google.com/uc?id=FILE_ID_FOR_MODEL_ZIP" -O model.zip
+          gdown "https://drive.google.com/uc?id=1RXUZAaTN1RcyuMlFA9R-SN7AcCzLttDm" -O model.zip
           unzip -o model.zip -d tmp_models
           # Find the folder that contains 'model_explanation_ft' and 'model_type_ft'
           MODELS_DIR=$(find tmp_models -type d -name "models" | head -n 1)
