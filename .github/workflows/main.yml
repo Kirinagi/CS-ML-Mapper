@@ -2,10 +2,8 @@ name: Run Feedback Pipeline
 
 on:
   schedule:
-    # Use 'cron' syntax. '0 2 * * *' means at 02:00 UTC every day.
-    # 9 AM WIB (UTC+7) is 2 AM UTC.
-    - cron: '0 0 * * *'
-  workflow_dispatch: # Run manually from GitHub Actions tab
+    - cron: '0 0 * * *' # Runs at 00:00 UTC daily
+  workflow_dispatch:
 
 jobs:
   run:
@@ -24,27 +22,20 @@ jobs:
         run: |
           pip install --upgrade pip
           pip install pandas torch transformers tqdm python-dotenv pyodps gdown
-          
-      - name: Download and extract model_type_ft
-        run: |
-          mkdir -p models/model_type_ft
-          gdown "https://drive.google.com/uc?id=1zJmKeLTq68sZfJTVOmxG-xWxupn_q6WF" -O model_type_ft.zip
-          unzip model_type_ft.zip -d models/model_type_ft
-          rm model_type_ft.zip
-      
-      - name: Download and extract model_explanation_ft
-        run: |
-          mkdir -p models/model_explanation_ft
-          gdown "https://drive.google.com/uc?id=1zJmKeLTq68sZfJTVOmxG-xWxupn_q6WF" -O model_explanation_ft.zip
-          unzip model_explanation_ft.zip -d models/model_explanation_ft
-          rm model_explanation_ft.zip
 
-      - name: Download mapping file
+      # === Download & Extract Models + Mapping Files ===
+      - name: Download and extract all models and mappings
         run: |
-          gdown "https://drive.google.com/uc?id=1lgwMmuv450NZg9jlBhHVeecP10gfOqHt" -O explanation_to_work_order.json
-          gdown "https://drive.google.com/uc?id=1zLe8ZO1qMvf4dXSxHNdnx6mwaOaByxmi" -O work_order_to_category.json
-          gdown "https://drive.google.com/uc?id=1MfZsuTmbjEct0AyZO0Na6Ew8JG1ChKT2" -O work_order_to_work_priority.json
+          gdown "https://drive.google.com/uc?id=FILE_ID_FOR_MODEL_ZIP" -O model.zip
+          unzip -o model.zip -d tmp_models
+          # Move model folders
+          mkdir -p models
+          mv tmp_models/models/* models/
+          # Move mapping JSONs
+          mv tmp_models/*.json ./
+          rm -rf tmp_models model.zip
 
+      # === Set Environment Variables ===
       - name: Set environment variables
         env:
           ODPS_ACCESS_ID: ${{ secrets.ODPS_ACCESS_ID }}
@@ -53,6 +44,7 @@ jobs:
           ODPS_ENDPOINT: ${{ secrets.ODPS_ENDPOINT }}
         run: echo "Environment variables set from GitHub Secrets"
 
+      # === Run Pipeline ===
       - name: Run pipeline
         env:
           ODPS_ACCESS_ID: ${{ secrets.ODPS_ACCESS_ID }}
@@ -60,3 +52,68 @@ jobs:
           ODPS_PROJECT: ${{ secrets.ODPS_PROJECT }}
           ODPS_ENDPOINT: ${{ secrets.ODPS_ENDPOINT }}
         run: python table_model_table.py
+
+
+
+# name: Run Feedback Pipeline
+
+# on:
+#   schedule:
+#     # Use 'cron' syntax. '0 2 * * *' means at 02:00 UTC every day.
+#     # 9 AM WIB (UTC+7) is 2 AM UTC.
+#     - cron: '0 0 * * *'
+#   workflow_dispatch: # Run manually from GitHub Actions tab
+
+# jobs:
+#   run:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#       - name: Checkout repository
+#         uses: actions/checkout@v3
+
+#       - name: Set up Python
+#         uses: actions/setup-python@v5
+#         with:
+#           python-version: "3.10"
+
+#       - name: Install dependencies
+#         run: |
+#           pip install --upgrade pip
+#           pip install pandas torch transformers tqdm python-dotenv pyodps gdown
+          
+#       - name: Download and extract model_type_ft
+#         run: |
+#           mkdir -p models/model_type_ft
+#           gdown "https://drive.google.com/uc?id=1zJmKeLTq68sZfJTVOmxG-xWxupn_q6WF" -O model_type_ft.zip
+#           unzip model_type_ft.zip -d models/model_type_ft
+#           rm model_type_ft.zip
+      
+#       - name: Download and extract model_explanation_ft
+#         run: |
+#           mkdir -p models/model_explanation_ft
+#           gdown "https://drive.google.com/uc?id=1zJmKeLTq68sZfJTVOmxG-xWxupn_q6WF" -O model_explanation_ft.zip
+#           unzip model_explanation_ft.zip -d models/model_explanation_ft
+#           rm model_explanation_ft.zip
+
+#       - name: Download mapping file
+#         run: |
+#           gdown "https://drive.google.com/uc?id=1lgwMmuv450NZg9jlBhHVeecP10gfOqHt" -O explanation_to_work_order.json
+#           gdown "https://drive.google.com/uc?id=1zLe8ZO1qMvf4dXSxHNdnx6mwaOaByxmi" -O work_order_to_category.json
+#           gdown "https://drive.google.com/uc?id=1MfZsuTmbjEct0AyZO0Na6Ew8JG1ChKT2" -O work_order_to_work_priority.json
+
+#       - name: Set environment variables
+#         env:
+#           ODPS_ACCESS_ID: ${{ secrets.ODPS_ACCESS_ID }}
+#           ODPS_SECRET_ACCESS_KEY: ${{ secrets.ODPS_SECRET_ACCESS_KEY }}
+#           ODPS_PROJECT: ${{ secrets.ODPS_PROJECT }}
+#           ODPS_ENDPOINT: ${{ secrets.ODPS_ENDPOINT }}
+#         run: echo "Environment variables set from GitHub Secrets"
+
+#       - name: Run pipeline
+#         env:
+#           ODPS_ACCESS_ID: ${{ secrets.ODPS_ACCESS_ID }}
+#           ODPS_SECRET_ACCESS_KEY: ${{ secrets.ODPS_SECRET_ACCESS_KEY }}
+#           ODPS_PROJECT: ${{ secrets.ODPS_PROJECT }}
+#           ODPS_ENDPOINT: ${{ secrets.ODPS_ENDPOINT }}
+#         run: python table_model_table.py
