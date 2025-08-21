@@ -52,8 +52,6 @@ SELECT
     customer_email, customer_name
 FROM kredi_dwd.dwd_customer_support_customer_feedback_df
 WHERE pt = MAX_PT('kredi_dwd.dwd_customer_support_customer_feedback_df')
-    AND to_date(submit_time) = DATEADD(to_date(GETDATE()), -1, 'dd')
-    AND fixed_or_not = 0
 ORDER BY submit_time DESC
 """
 
@@ -66,18 +64,18 @@ DESCRIPTION_COLUMN = "description"
 
 # --- Model & Mapping Paths ---
 # MODEL_PATHS = {
-#     # "type": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_type_ft",
-#     # "explanation": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_explanation_ft"
-#     "type": "./models/model_type_ft",
-#     "explanation": "./models/model_explanation_ft"
+#     "type": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_type_ft",
+#     "explanation": "C:\\Users\\ITN\\Downloads\\models(1)\\models\\model_explanation_ft"
+#     # "type": "./models/model_type_ft",
+#     # "explanation": "./models/model_explanation_ft"
 # }
 
 # MAPPING_PATHS = {
 #     "type": os.path.join(MODEL_PATHS["type"], 'config.json'),
 #     "explanation": os.path.join(MODEL_PATHS["explanation"], 'config.json'),
-#     "explanation_to_work_order": ".\\explanation_to_work_order.json",
-#     "work_order_to_category": ".\\work_order_to_category.json",
-#     "work_order_to_work_priority": ".\\work_order_to_work_priority.json",
+#     "explanation_to_work_order": "C:\\Users\\ITN\\Documents\\GitHub\\CS-ML-Mapper\\explanation_to_work_order.json",
+#     "work_order_to_category": "C:\\Users\\ITN\\Documents\\GitHub\\CS-ML-Mapper\\work_order_to_category.json",
+#     "work_order_to_work_priority": "C:\\Users\\ITN\\Documents\\GitHub\\CS-ML-Mapper\\work_order_to_work_priority.json",
 # }
 
 # --- Model & Mapping Paths ---
