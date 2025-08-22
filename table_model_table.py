@@ -52,6 +52,7 @@ SELECT
     customer_email, customer_name
 FROM kredi_dwd.dwd_customer_support_customer_feedback_df
 WHERE pt = MAX_PT('kredi_dwd.dwd_customer_support_customer_feedback_df')
+and fixed_or_not = 0
 ORDER BY submit_time DESC
 """
 
